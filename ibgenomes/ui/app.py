@@ -108,9 +108,11 @@ class App(tk.Tk):
             if self.cb_estado.current() >= 0:
                 self._consultar(self._estados[self.cb_estado.current()].id, self.cb_estado.get())
         else:
-            self.cb_mun.configure(state="readonly" if self._municipios else "disabled")
             self._limpar()
-            self.status.set("Selecione um estado e depois um município.")
+            if self.cb_estado.current() >= 0:
+                self._on_estado()  # já há estado escolhido: carrega os municípios dele
+            else:
+                self.status.set("Selecione um estado e depois um município.")
 
     def _on_estado(self, _evt=None) -> None:
         estado = self._estados[self.cb_estado.current()]
